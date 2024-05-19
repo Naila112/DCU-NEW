@@ -1,5 +1,7 @@
-import 'package:dcu_new/date_widgets.dart';
-import 'package:dcu_new/greeting_widget.dart';
+import 'package:dcu_new/screens/adddailychecup.dart';
+import 'package:dcu_new/widgets/datebox.dart';
+import 'package:dcu_new/widgets/greetingbox.dart';
+import 'package:dcu_new/widgets/sidebarbox.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -15,64 +17,62 @@ class DashboardScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            buildGreetingBox(context, ''),
+            const GreetingBox(username: 'Naila'),
+            const SizedBox(height: 15),
             buildDateSection(context),
-            const SizedBox(height: 20),
-            buildBox(context),
+            const SizedBox(height: 15),
+            Container(
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color(0xFFB0C3FF),
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(50),
+                  topRight: Radius.circular(50),
+                ),
+              ),
+              child: Column(
+                children: [
+                  const SizedBox(height: 15),
+                  buildContentBox(
+                    context,
+                    'Add Daily Check-Up',
+                    'calendar-plus-96.png',
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const AddDailyCheckUpScreen(),
+                        ),
+                      );
+                    },
+                  ),
+                  const SizedBox(height: 5),
+                  buildContentBox(
+                    context,
+                    'Medical Record',
+                    'stethoscope.png',
+                    onPressed: () {
+                      // Navigator.push(
+                      //   context,
+                      //   MaterialPageRoute(
+                      //     builder: (context) => const MedicalRecordScreen(),
+                      //   ),
+                      // );
+                    },
+                  ),
+                  const SizedBox(height: 100),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-    );
-  }
-
-  Widget buildBox(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      decoration: const BoxDecoration(
-        color: Color(0xFFB0C3FF),
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(50),
-          topRight: Radius.circular(50),
-        ),
-      ),
-      child: Column(
-        children: [
-          const SizedBox(height: 15),
-          buildContentBox(
-            context,
-            'Data Karyawan',
-            'treatment.png',
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const DataKaryawanScreen(),
-              //   ),
-              // );
-            },
-          ),
-          const SizedBox(height: 5),
-          buildContentBox(
-            context,
-            'Medical Record',
-            'stethoscope.png',
-            onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(
-              //     builder: (context) => const MedicalRecordScreen(),
-              //   ),
-              // );
-            },
-          ),
-          const SizedBox(height: 100),
-        ],
-      ),
+      drawer: const DrawerWidget(),
     );
   }
 
   Widget buildContentBox(BuildContext context, String title, String imageName,
-      {required VoidCallback? onPressed}) {
+      {required VoidCallback onPressed}) {
     return CupertinoButton(
       onPressed: onPressed,
       child: Container(

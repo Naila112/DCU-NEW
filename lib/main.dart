@@ -1,3 +1,4 @@
+import 'package:dcu_new/screens/dashboardscreen.dart';
 import 'package:flutter/material.dart';
 
 import 'pages/homepages.dart';
@@ -18,9 +19,9 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       routes: {
-        "/": (context) => const HomePage(),
+        // "/": (context) => const HomePage(),
         // "/": (context) => const LoginPage(),
-        // "/": (context) => const DashboardScreen(),
+        "/": (context) => DashboardScreen(),
         // "/": (context) => const ProfileScreen(),
       },
     );
