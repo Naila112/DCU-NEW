@@ -1,4 +1,5 @@
-import 'package:flutter/cupertino.dart';
+import 'package:dcu_new/screens/profilescreen.dart';
+import 'package:dcu_new/screens/settingscreen.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -22,7 +23,7 @@ class DrawerWidget extends StatelessWidget {
             accountName: Padding(
               padding: EdgeInsets.only(top: 30.0), // Tambahkan jarak vertikal
               child: Text(
-                'Full Name',
+                'HaniHani',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
@@ -31,7 +32,7 @@ class DrawerWidget extends StatelessWidget {
               ),
             ),
             accountEmail: Text(
-              'email@example.com',
+              'Hani@gmail.com',
               style: TextStyle(
                 fontSize: 16,
                 color: Colors.white,
@@ -42,7 +43,12 @@ class DrawerWidget extends StatelessWidget {
             // icon: CupertinoIcons.person,
             text: "Profile",
             onTap: () {
-              // Handle navigation to home screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfileScreen(),
+                ),
+              );
             },
           ),
           _buildDrawerItem(
@@ -56,7 +62,12 @@ class DrawerWidget extends StatelessWidget {
             // icon: Icons.shopping_cart,
             text: "Setting",
             onTap: () {
-              // Handle navigation to home screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SettingScreen(),
+                ),
+              );
             },
           ),
           // _buildDrawerItem(
