@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 class DatePickerScreen extends StatefulWidget {
-  const DatePickerScreen({Key? key}) : super(key: key);
+  final Function(DateTime) onDateSelected;
+
+  const DatePickerScreen({Key? key, required this.onDateSelected})
+      : super(key: key);
 
   @override
   _DatePickerScreenState createState() => _DatePickerScreenState();
@@ -50,6 +53,7 @@ class _DatePickerScreenState extends State<DatePickerScreen> {
               setState(() {
                 _selectedDate = selectedDay;
               });
+              widget.onDateSelected(selectedDay);
             },
             calendarStyle: const CalendarStyle(
               defaultTextStyle: TextStyle(color: Colors.black, fontSize: 16),
@@ -88,7 +92,10 @@ class _DatePickerScreenState extends State<DatePickerScreen> {
 }
 
 class TimePickerScreen extends StatefulWidget {
-  const TimePickerScreen({Key? key}) : super(key: key);
+  final Function(int, int) onTimeSelected;
+
+  const TimePickerScreen({Key? key, required this.onTimeSelected})
+      : super(key: key);
 
   @override
   _TimePickerScreenState createState() => _TimePickerScreenState();
@@ -136,9 +143,10 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
             child: Text(
               '${_selectedHour.toString().padLeft(2, '0')}:${_selectedMinute.toString().padLeft(2, '0')}',
               style: const TextStyle(
-                  fontSize: 22,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.black),
+                fontSize: 22,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+              ),
             ),
           ),
         ),
@@ -157,14 +165,14 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
             children: [
               const Align(
                 alignment: Alignment.centerLeft,
-                child: Text(
-                  'Select Time',
-                  style: TextStyle(
-                    fontSize: 22,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black,
-                  ),
-                ),
+                // child: Text(
+                //   'Select Time',
+                //   style: TextStyle(
+                //     fontSize: 22,
+                //     fontWeight: FontWeight.bold,
+                //     color: Colors.black,
+                //   ),
+                // ),
               ),
               Expanded(
                 child: Row(
@@ -177,6 +185,7 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                           setState(() {
                             _selectedHour = value;
                           });
+                          widget.onTimeSelected(value, _selectedMinute);
                         },
                         children: _hours.map((int value) {
                           return Center(
@@ -193,6 +202,7 @@ class _TimePickerScreenState extends State<TimePickerScreen> {
                           setState(() {
                             _selectedMinute = value;
                           });
+                          widget.onTimeSelected(_selectedHour, value);
                         },
                         children: _minutesSeconds.map((int value) {
                           return Center(

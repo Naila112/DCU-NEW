@@ -1,74 +1,57 @@
-import 'package:dcu_new/widgets/dialogup.dart';
+import 'package:dcu_new/widgets/customappbar.dart';
 import 'package:flutter/material.dart';
+import 'package:dcu_new/widgets/dialogup.dart';
+import 'package:intl/intl.dart';
+
+// Model untuk jadwal
+class Schedule {
+  final String date;
+  final String time;
+
+  Schedule({required this.date, required this.time});
+}
 
 class ScheduleScreen extends StatefulWidget {
   final String selectedDate;
   final String selectedTime;
 
   const ScheduleScreen({
-    super.key,
+    Key? key,
     required this.selectedDate,
     required this.selectedTime,
-  });
+  }) : super(key: key);
 
   @override
   _ScheduleScreenState createState() => _ScheduleScreenState();
 }
 
 class _ScheduleScreenState extends State<ScheduleScreen> {
-  List<Map<String, String>> schedules = [];
+  List<Schedule> schedules = []; // Menggunakan model Schedule
 
   @override
   void initState() {
     super.initState();
-    // Add the selected date and time to the list of schedules when the widget is initialized
-    schedules.add({'date': widget.selectedDate, 'time': widget.selectedTime});
+    // Tambahkan jadwal yang dipilih ke dalam daftar jadwal saat widget diinisialisasi
+    _addSchedule(widget.selectedDate, widget.selectedTime);
+  }
+
+  void _addSchedule(String date, String time) {
+    setState(() {
+      schedules.add(Schedule(
+          date: date, time: time)); // Tambahkan jadwal menggunakan model
+    });
   }
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
     return Scaffold(
       backgroundColor: const Color(0xFFB0C3FF),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50.0),
-        child: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 10.0,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.black,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: 0.5, // Change to _progressValue if needed
-                        child: Container(
-                          height: 10.0,
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+      appBar: CustomAppBar(
+        title: '',
+        onBackPressed: () {
+          Navigator.pop(context);
+        },
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -76,14 +59,14 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Row(
+              Row(
                 children: [
                   Text(
-                    'Mei',
-                    style: TextStyle(
+                    DateFormat('MMMM, yyyy').format(now),
+                    style: const TextStyle(
+                      color: Colors.black,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      color: Colors.black,
                     ),
                   ),
                 ],
@@ -97,8 +80,20 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
                   return Padding(
                     padding: const EdgeInsets.only(bottom: 16.0),
                     child: ScheduleCard(
-                      date: schedules[index]['date']!,
-                      time: schedules[index]['time']!,
+                      date: schedules[index].date,
+                      time: schedules[index].time,
+                      onTap: () {
+                        // Berpindah ke layar detail pemeriksaan kesehatan
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => HealthCheckUpScreen(
+                              date: schedules[index].date,
+                              time: schedules[index].time,
+                            ),
+                          ),
+                        );
+                      },
                     ),
                   );
                 },
@@ -114,21 +109,19 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
 class ScheduleCard extends StatelessWidget {
   final String date;
   final String time;
+  final VoidCallback onTap;
 
-  const ScheduleCard({Key? key, required this.date, required this.time})
-      : super(key: key);
+  const ScheduleCard({
+    Key? key,
+    required this.date,
+    required this.time,
+    required this.onTap,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => const HealthCheckUpScreen(),
-          ),
-        );
-      },
+      onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(16.0),
         decoration: BoxDecoration(

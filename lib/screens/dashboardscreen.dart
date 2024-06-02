@@ -1,4 +1,5 @@
 import 'package:dcu_new/screens/AddDailyCheckUpScreen/dateselectionscreen.dart';
+import 'package:dcu_new/screens/MedicalRecordScreen/medicalrecordapp.dart';
 import 'package:dcu_new/widgets/datebox.dart';
 import 'package:dcu_new/widgets/greetingbox.dart';
 import 'package:dcu_new/widgets/sidebarbox.dart';
@@ -19,7 +20,7 @@ class DashboardScreen extends StatelessWidget {
           children: [
             const GreetingBox(username: 'Naila'),
             const SizedBox(height: 15),
-            buildDateSection(context),
+            buildDateSection1(context),
             const SizedBox(height: 15),
             Container(
               width: double.infinity,
@@ -52,12 +53,12 @@ class DashboardScreen extends StatelessWidget {
                     'Medical Record',
                     'stethoscope.png',
                     onPressed: () {
-                      // Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(
-                      //     builder: (context) => const MedicalRecordScreen(),
-                      //   ),
-                      // );
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const MedicalRecordScreen(),
+                        ),
+                      );
                     },
                   ),
                   const SizedBox(height: 100),

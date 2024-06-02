@@ -1,8 +1,12 @@
-import 'package:flutter/foundation.dart';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart';
+import 'package:dcu_new/widgets/customappbar.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SettingScreen extends StatefulWidget {
-  const SettingScreen({super.key});
+  const SettingScreen({Key? key}) : super(key: key);
 
   @override
   _SettingScreenState createState() => _SettingScreenState();
@@ -14,10 +18,18 @@ class _SettingScreenState extends State<SettingScreen> {
   String idPegawai = '';
   String email = '';
   String password = '';
+  String _photoUrl = ''; // Url foto profil
+  bool _isEditMode = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: CustomAppBar(
+        title: 'Setting',
+        onBackPressed: () {
+          Navigator.pop(context);
+        },
+      ),
       backgroundColor: Colors.white,
       body: Stack(
         children: [
@@ -46,12 +58,14 @@ class _SettingScreenState extends State<SettingScreen> {
                             TextFormField(
                               initialValue: 'HaniHani',
                               onSaved: (value) => name = value ?? '',
+                              readOnly: !_isEditMode,
                             ),
                             const SizedBox(height: 10),
                             const Text("Id Pegawai"),
                             TextFormField(
                               initialValue: '1004',
                               onSaved: (value) => idPegawai = value ?? '',
+                              readOnly: !_isEditMode,
                             ),
                             const SizedBox(height: 10),
                             const Text("Email"),
@@ -59,12 +73,14 @@ class _SettingScreenState extends State<SettingScreen> {
                               initialValue: 'Hani@gmail.com',
                               onSaved: (value) => email = value ?? '',
                               keyboardType: TextInputType.emailAddress,
+                              readOnly: true, // Email tidak dapat diedit
                             ),
                             const SizedBox(height: 10),
                             const Text("Password"),
                             TextFormField(
                               obscureText: true,
                               onSaved: (value) => password = value ?? '',
+                              readOnly: !_isEditMode,
                             ),
                             const SizedBox(height: 20),
                             Center(
@@ -111,15 +127,36 @@ class _SettingScreenState extends State<SettingScreen> {
             top: 70,
             left: 0,
             right: 0,
-            child: Center(
+            child: GestureDetector(
+              onTap:
+                  _isEditMode ? _uploadPhoto : null, // <-- Here is the change
               child: CircleAvatar(
-                radius: 50,
-                backgroundColor: Colors.grey[300],
+                radius: 60,
+                backgroundColor:
+                    Colors.grey[300], // Warna latar belakang avatar
+                backgroundImage: _photoUrl.isNotEmpty
+                    ? FileImage(File(_photoUrl))
+                    : const AssetImage('assets/default_avatar.jpg')
+                        as ImageProvider,
+                child: _isEditMode && _photoUrl.isEmpty
+                    ? const Icon(Icons.camera_alt)
+                    : null,
               ),
             ),
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _uploadPhoto() async {
+    print('Upload photo function called'); // Tambahkan log
+    final XFile? pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      setState(() {
+        _photoUrl = pickedFile.path;
+      });
+    }
   }
 }

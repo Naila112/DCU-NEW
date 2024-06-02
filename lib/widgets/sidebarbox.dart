@@ -1,5 +1,7 @@
+import 'package:dcu_new/screens/MedicalRecordScreen/medicalrecordapp.dart';
 import 'package:dcu_new/screens/profilescreen.dart';
 import 'package:dcu_new/screens/settingscreen.dart';
+import 'package:dcu_new/widgets/logoutDialog.dart';
 import 'package:flutter/material.dart';
 
 class DrawerWidget extends StatelessWidget {
@@ -40,7 +42,7 @@ class DrawerWidget extends StatelessWidget {
             ),
           ),
           _buildDrawerItem(
-            // icon: CupertinoIcons.person,
+            icon: Icons.person,
             text: "Profile",
             onTap: () {
               Navigator.push(
@@ -52,14 +54,19 @@ class DrawerWidget extends StatelessWidget {
             },
           ),
           _buildDrawerItem(
-            // icon: CupertinoIcons.person,
+            icon: Icons.medical_services,
             text: "Medical Record",
             onTap: () {
-              // Handle navigation to home screen
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const MedicalRecordScreen(),
+                ),
+              );
             },
           ),
           _buildDrawerItem(
-            // icon: Icons.shopping_cart,
+            icon: Icons.settings,
             text: "Setting",
             onTap: () {
               Navigator.push(
@@ -70,34 +77,34 @@ class DrawerWidget extends StatelessWidget {
               );
             },
           ),
-          // _buildDrawerItem(
-          //   icon: Icons.list_alt,
-          //   text: "My Wish List",
-          // ),
-          // _buildDrawerItem(
-          //   icon: Icons.settings,
-          //   text: "Setting",
-          // ),
-          // _buildDrawerItem(
-          //   icon: Icons.exit_to_app,
-          //   text: "Log Out",
-          // ),
+          _buildDrawerItem(
+            icon: Icons.logout,
+            text: "Log Out",
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const LogOutDialog(),
+                ),
+              );
+            },
+          ),
         ],
       ),
     );
   }
 
   ListTile _buildDrawerItem({
-    // required IconData icon,
+    required IconData icon,
     required String text,
     VoidCallback? onTap,
   }) {
     return ListTile(
-      // leading: Icon(
-      //   icon,
-      //   color: Colors.black87,
-      //   size: 24,
-      // ),
+      leading: Icon(
+        icon,
+        color: Colors.black87,
+        size: 24,
+      ),
       title: Text(
         text,
         style: const TextStyle(

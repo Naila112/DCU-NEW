@@ -1,30 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-Widget buildDateSection(BuildContext context) {
+// Date Section 1
+Widget buildDateSection1(BuildContext context) {
   DateTime now = DateTime.now();
-  DateTime firstDayOfMonth =
-      DateTime(now.year, now.month, now.day - now.weekday + 1);
-  DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+  DateTime firstDayOfWeek = now.subtract(Duration(days: now.weekday - 1));
 
   List<String> daysInEnglish = [];
-  for (int i = 0; i < 7; i++) {
-    daysInEnglish
-        .add(DateFormat('E').format(firstDayOfMonth.add(Duration(days: i))));
-  }
-
   List<int> daysOfMonth = [];
 
-  int startDayIndex =
-      firstDayOfMonth.weekday - 1; // Adjust start day to start from Monday
   for (int i = 0; i < 7; i++) {
-    DateTime currentDate =
-        firstDayOfMonth.add(Duration(days: i - startDayIndex));
-    if (currentDate.isBefore(lastDayOfMonth.add(const Duration(days: 1)))) {
-      daysOfMonth.add(currentDate.day);
-    } else {
-      daysOfMonth.add(0);
-    }
+    DateTime currentDay = firstDayOfWeek.add(Duration(days: i));
+    daysInEnglish.add(DateFormat('E').format(currentDay));
+    daysOfMonth.add(currentDay.day);
   }
 
   return Padding(
@@ -40,7 +28,7 @@ Widget buildDateSection(BuildContext context) {
                 day: daysOfMonth[i],
                 dayName: daysInEnglish[i],
                 isToday: daysOfMonth[i] == now.day &&
-                    now.month == firstDayOfMonth.month,
+                    firstDayOfWeek.add(Duration(days: i)).month == now.month,
                 context: context,
               ),
           ],
@@ -88,3 +76,78 @@ Widget buildDayBox({
     ),
   );
 }
+
+// // Date Section 2
+// Widget buildDateSection2(BuildContext context) {
+//   DateTime now = DateTime.now();
+//   DateTime firstDayOfMonth = DateTime(now.year, now.month, 1);
+//   DateTime lastDayOfMonth = DateTime(now.year, now.month + 1, 0);
+
+//   List<DateTime> daysInMonth = [];
+
+//   for (int i = 0; i <= lastDayOfMonth.day - firstDayOfMonth.day; i++) {
+//     daysInMonth.add(firstDayOfMonth.add(Duration(days: i)));
+//   }
+
+//   return SingleChildScrollView(
+//     scrollDirection: Axis.horizontal,
+//     child: Row(
+//       children: daysInMonth.map((date) {
+//         return buildDateTile(
+//           day: date.day.toString(),
+//           date: DateFormat('E').format(date),
+//           isSelected: date.day == now.day && date.month == now.month,
+//           onTap: () {
+//             // Logic for what happens when a date is tapped
+//             if (kDebugMode) {
+//               print('Date tapped: ${date.day}');
+//             }
+//           },
+//         );
+//       }).toList(),
+//     ),
+//   );
+// }
+
+// Widget buildDateTile({
+//   required String day,
+//   required String date,
+//   required bool isSelected,
+//   required VoidCallback onTap,
+// }) {
+//   return GestureDetector(
+//     onTap: onTap,
+//     child: Container(
+//       margin: const EdgeInsets.symmetric(horizontal: 5),
+//       width: 60,
+//       height: 80,
+//       decoration: BoxDecoration(
+//         color: isSelected ? const Color(0xFFB0C3FF) : Colors.white,
+//         borderRadius: BorderRadius.circular(10.0),
+//         border: isSelected ? Border.all(color: Colors.blue, width: 2) : null,
+//       ),
+//       child: Column(
+//         mainAxisAlignment: MainAxisAlignment.center,
+//         children: [
+//           Text(
+//             day,
+//             style: TextStyle(
+//               color: isSelected ? Colors.black : Colors.blue[300],
+//               fontWeight: FontWeight.bold,
+//               fontSize: 18,
+//             ),
+//           ),
+//           const SizedBox(height: 8),
+//           Text(
+//             date,
+//             style: TextStyle(
+//               color: isSelected ? Colors.white : Colors.black,
+//               fontWeight: FontWeight.bold,
+//               fontSize: 16,
+//             ),
+//           ),
+//         ],
+//       ),
+//     ),
+//   );
+// }

@@ -1,7 +1,14 @@
 import 'package:flutter/material.dart';
 
 class HealthCheckUpScreen extends StatelessWidget {
-  const HealthCheckUpScreen({super.key});
+  final String date;
+  final String time;
+
+  const HealthCheckUpScreen({
+    Key? key,
+    required this.date,
+    required this.time,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -37,12 +44,12 @@ class HealthCheckUpScreen extends StatelessWidget {
                 ),
               ],
             ),
-            child: const Column(
+            child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
-                Icon(Icons.check_circle, color: Colors.green, size: 60),
-                SizedBox(height: 12),
-                Text(
+                const Icon(Icons.check_circle, color: Colors.green, size: 60),
+                const SizedBox(height: 12),
+                const Text(
                   'Successful!',
                   style: TextStyle(
                     fontSize: 26,
@@ -50,42 +57,42 @@ class HealthCheckUpScreen extends StatelessWidget {
                     color: Colors.black87,
                   ),
                 ),
-                SizedBox(height: 5),
-                Text(
+                const SizedBox(height: 5),
+                const Text(
                   'Your Check-Up was successful',
                   style: TextStyle(
                     fontSize: 16,
                     color: Colors.black54,
                   ),
                 ),
-                SizedBox(height: 20),
-                Divider(),
-                SizedBox(height: 10),
+                const SizedBox(height: 20),
+                const Divider(),
+                const SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '21 Mei 2024 • 07:00',
-                      style: TextStyle(color: Colors.black54),
+                      '$date • $time',
+                      style: const TextStyle(color: Colors.black54),
                     ),
-                    Text(
+                    const Text(
                       'ID1125079',
                       style: TextStyle(color: Colors.black54),
                     ),
                   ],
                 ),
-                SizedBox(height: 10),
-                Divider(),
-                SizedBox(height: 10),
-                Text(
+                const SizedBox(height: 10),
+                const Divider(),
+                const SizedBox(height: 10),
+                const Text(
                   'STATUS',
                   style: TextStyle(
                     fontSize: 18,
                     color: Colors.black87,
                   ),
                 ),
-                SizedBox(height: 5),
-                Text(
+                const SizedBox(height: 5),
+                const Text(
                   'FIT',
                   style: TextStyle(
                     fontSize: 28,
@@ -93,20 +100,20 @@ class HealthCheckUpScreen extends StatelessWidget {
                     color: Colors.green,
                   ),
                 ),
-                SizedBox(height: 20),
-                DetailCheckUpItem(
+                const SizedBox(height: 20),
+                const DetailCheckUpItem(
                   label: 'Tekanan Darah',
                   value: '80mm/Hg',
                 ),
-                DetailCheckUpItem(
+                const DetailCheckUpItem(
                   label: 'Berat Badan',
                   value: '60kg',
                 ),
-                DetailCheckUpItem(
+                const DetailCheckUpItem(
                   label: 'Suhu Tubuh',
                   value: '29°C',
                 ),
-                DetailCheckUpItem(
+                const DetailCheckUpItem(
                   label: 'Denyut Nadi',
                   value: '50Bpm',
                 ),
@@ -123,8 +130,11 @@ class DetailCheckUpItem extends StatelessWidget {
   final String label;
   final String value;
 
-  const DetailCheckUpItem(
-      {super.key, required this.label, required this.value});
+  const DetailCheckUpItem({
+    Key? key,
+    required this.label,
+    required this.value,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {

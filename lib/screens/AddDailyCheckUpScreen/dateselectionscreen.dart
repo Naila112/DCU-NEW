@@ -1,7 +1,8 @@
-import 'package:dcu_new/screens/AddDailyCheckUpScreen/timeselectionscreen.dart';
+import 'package:dcu_new/widgets/customappbar.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:dcu_new/screens/AddDailyCheckUpScreen/schedulescreen.dart';
+import 'package:dcu_new/screens/AddDailyCheckUpScreen/timeselectionscreen.dart';
 
 class AddDailyCheckUpScreen extends StatefulWidget {
   const AddDailyCheckUpScreen({Key? key}) : super(key: key);
@@ -11,54 +12,32 @@ class AddDailyCheckUpScreen extends StatefulWidget {
 }
 
 class _AddDailyCheckUpScreenState extends State<AddDailyCheckUpScreen> {
-  final DateTime _selectedDate = DateTime.now();
-  final int _selectedHour = 1;
-  final int _selectedMinute = 0;
+  DateTime _selectedDate = DateTime.now();
+  int _selectedHour = 1;
+  int _selectedMinute = 0;
+
+  void _updateSelectedDate(DateTime date) {
+    setState(() {
+      _selectedDate = date;
+    });
+  }
+
+  void _updateSelectedTime(int hour, int minute) {
+    setState(() {
+      _selectedHour = hour;
+      _selectedMinute = minute;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFFB0C3FF),
-      appBar: PreferredSize(
-        preferredSize: const Size.fromHeight(50.0),
-        child: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          flexibleSpace: Container(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 30.0, vertical: 20.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Stack(
-                    children: [
-                      Container(
-                        height: 10.0,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(8),
-                        ),
-                      ),
-                      FractionallySizedBox(
-                        alignment: Alignment.centerLeft,
-                        widthFactor: 0.5, // Change to _progressValue if needed
-                        child: Container(
-                          height: 10.0,
-                          decoration: BoxDecoration(
-                            color: Colors.black,
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
+      appBar: CustomAppBar(
+        title: '',
+        onBackPressed: () {
+          Navigator.pop(context);
+        },
       ),
       body: SingleChildScrollView(
         child: Padding(
@@ -66,13 +45,18 @@ class _AddDailyCheckUpScreenState extends State<AddDailyCheckUpScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const DatePickerScreen(),
-              const TimePickerScreen(),
+              DatePickerScreen(
+                onDateSelected: _updateSelectedDate,
+              ),
+              TimePickerScreen(
+                onTimeSelected: _updateSelectedTime,
+              ),
               ElevatedButton(
                 onPressed: () {
                   String formattedDate =
-                      DateFormat('dd MMM').format(_selectedDate);
-                  String formattedTime = '$_selectedHour:$_selectedMinute';
+                      DateFormat('dd').format(_selectedDate); // Changed to 'dd'
+                  String formattedTime =
+                      '${_selectedHour.toString().padLeft(2, '0')}:${_selectedMinute.toString().padLeft(2, '0')}';
                   Navigator.push(
                     context,
                     MaterialPageRoute(
