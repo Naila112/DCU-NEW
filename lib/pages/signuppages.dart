@@ -72,7 +72,7 @@ class SignUpForm extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => DashboardScreen(),
+                        builder: (context) => const DashboardScreen(),
                       ),
                     );
                   },

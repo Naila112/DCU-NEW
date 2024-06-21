@@ -1,8 +1,6 @@
 import 'package:dcu_new/screens/dashboardscreen.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/homepages.dart';
-
 void main() {
   runApp(const MyApp());
 }
